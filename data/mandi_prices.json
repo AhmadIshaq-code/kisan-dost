@@ -1,0 +1,20 @@
+[
+  {
+    "crop": "wheat",
+    "mandi": "Faisalabad",
+    "price": 3200,
+    "unit": "maund"
+  },
+  {
+    "crop": "chickpea",
+    "mandi": "Faisalabad",
+    "price": 7500,
+    "unit": "maund"
+  },
+  {
+    "crop": "maize",
+    "mandi": "Faisalabad",
+    "price": 2800,
+    "unit": "maund"
+  }
+]

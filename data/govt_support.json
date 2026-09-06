@@ -1,0 +1,26 @@
+[
+  {
+    "program_name": "Kisan Card",
+    "province": "Punjab",
+    "support_type": "Agricultural financial support",
+    "eligibility": "Punjab farmers meeting the current program eligibility requirements.",
+    "benefit": "May provide access to eligible agricultural financial support and input-related benefits.",
+    "verification_status": "Demo data — verify current eligibility and benefits with the Punjab Agriculture Department."
+  },
+  {
+    "program_name": "Subsidized Fertilizer Support",
+    "province": "Punjab",
+    "support_type": "Fertilizer subsidy",
+    "eligibility": "Eligible farmers under an active government subsidy program.",
+    "benefit": "Eligible farmers may receive fertilizer-related subsidy support.",
+    "verification_status": "Demo data — verify active scheme, eligibility and subsidy amount with the relevant government department."
+  },
+  {
+    "program_name": "Agricultural Loan Support",
+    "province": "Punjab",
+    "support_type": "Agricultural financing",
+    "eligibility": "Farmers meeting the requirements of an active agricultural financing program.",
+    "benefit": "Access to agricultural financing subject to lender and government program conditions.",
+    "verification_status": "Demo data — verify current loan terms and eligibility with the relevant institution."
+  }
+]

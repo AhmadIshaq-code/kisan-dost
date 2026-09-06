@@ -1,0 +1,18 @@
+[
+  {
+    "crop": "cotton",
+    "pest": "whitefly",
+    "treatment": "Use an officially registered product for whitefly according to its current label.",
+    "dosage": null,
+    "unit": null,
+    "safety_notes": "Do not apply a pesticide rate unless it is verified from the product label or an authoritative agricultural source."
+  },
+  {
+    "crop": "chickpea",
+    "pest": "pod borer",
+    "treatment": "Use an officially registered treatment according to the current product label and local agricultural guidance.",
+    "dosage": null,
+    "unit": null,
+    "safety_notes": "Do not use an unverified pesticide dosage. Follow the registered product label and required protective measures."
+  }
+]
