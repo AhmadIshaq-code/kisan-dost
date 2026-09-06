@@ -40,12 +40,14 @@ The project demonstrates practical implementation of **Agentic AI concepts using
 - [Installation](#-installation)
 - [Configuration](#-configuration)
 - [Running the Application](#-running-the-application)
+- [Demo Videos](#-demo-videos)
 - [Example Workflow](#-example-workflow)
 - [OpenAI Agents SDK Concepts](#-openai-agents-sdk-concepts)
 - [Testing Checklist](#-testing-checklist)
 - [Safety Considerations](#-safety-considerations)
 - [Current Limitations](#-current-limitations)
 - [Future Roadmap](#-future-roadmap)
+- [Future Integration](#-future-integration)
 - [Security](#-security)
 - [Project Philosophy](#-project-philosophy)
 
@@ -781,6 +783,22 @@ Possible Diagnosis: Bacterial Blight
 
 ---
 
+# 🎥 Demo Videos
+
+## 🎬 Kisan Dost Agent Project Demo
+
+[Watch Full Project Demo](https://drive.google.com/file/d/1-62ahWog5dlVFlNfrxHPzon-UlQXH6kZ/view?usp=sharing)
+
+This video demonstrates the complete Kisan Dost Agentic AI project, including the multi-agent architecture, Triage Agent, specialist agents, handoffs, Function Tools, Context, Sessions, and Guardrails.
+
+## 🖥️ Kisan Dost Frontend Demo
+
+[Watch Frontend Demo](https://drive.google.com/file/d/10IjYVs4HO-IScISIAGfHAkh4YYkkncH6/view?usp=sharing)
+
+This video demonstrates the standalone Kisan Dost frontend prototype, including the Dashboard, AI Assistant, Agent Activity, Crop Advisor, Pest Doctor, Weather, Market & Finance, Government Support, and Farmer Profile.
+
+---
+
 # 📖 Example Workflow
 
 ## Scenario: Farmer asks for crop recommendation
@@ -939,6 +957,56 @@ Future versions could allow complex cases to be escalated to qualified agricultu
 - Observability
 - Scalable deployment
 - Notification services
+
+---
+
+# 🔮 Future Integration
+
+## Current Architecture
+
+The Kisan Dost project currently consists of two separate components:
+
+- **Frontend:** Standalone prototype (currently in development)
+- **Backend:** Agentic AI system built with OpenAI Agents SDK (functional)
+
+These components operate independently and are not yet integrated.
+
+## Planned Integration
+
+In future versions, the frontend and backend will be integrated through the following architecture:
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                  React + TypeScript Frontend                 │
+│                   (Tailwind CSS Styling)                     │
+└────────────────────┬────────────────────────────────────────┘
+                     │
+                 HTTP APIs
+                     │
+┌────────────────────▼────────────────────────────────────────┐
+│                    FastAPI Backend                           │
+│                  (API Bridge Layer)                          │
+└────────────────────┬────────────────────────────────────────┘
+                     │
+                  Function Calls
+                     │
+┌────────────────────▼────────────────────────────────────────┐
+│        Kisan Dost Agentic AI System                          │
+│     (OpenAI Agents SDK, Specialist Agents, Tools)          │
+└─────────────────────────────────────────────────────────────┘
+```
+
+## Integration Plan
+
+- **FastAPI Backend** will serve as a bridge between the React frontend and the existing Agentic AI system
+- **API Endpoints** will expose agent capabilities through REST APIs
+- **Structured Responses** will maintain the existing Pydantic models for type safety
+- **Session Management** will connect frontend interactions to SQLite session storage
+- **Context Passing** will maintain farmer profile and conversation context across API calls
+
+## Status
+
+🚧 **This integration is planned for a future version and is not implemented yet.**
 
 ---
 

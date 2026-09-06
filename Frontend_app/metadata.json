@@ -1,0 +1,6 @@
+{
+  "name": "Kisan Dost",
+  "description": "Agentic AI Farming Assistant for Pakistani Farmers",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
