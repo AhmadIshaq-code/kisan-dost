@@ -394,9 +394,11 @@ export const AiAssistantView: React.FC<AiAssistantViewProps> = ({
 
     setMessages((prev) => [...prev, initialAiMsg]);
 
+    const API_BASE_URL = (import.meta as any).env?.VITE_API_BASE_URL || '';
+
     try {
       // 1. Try real Server-Sent Events (SSE) streaming endpoint
-      const response = await fetch('http://localhost:8000/api/chat/stream', {
+      const response = await fetch(`${API_BASE_URL}/api/chat/stream`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -418,7 +420,7 @@ export const AiAssistantView: React.FC<AiAssistantViewProps> = ({
 
       if (!response.ok || !response.body) {
         // Fallback to standard POST /api/chat if streaming is unavailable
-        const standardRes = await fetch('http://localhost:8000/api/chat', {
+        const standardRes = await fetch(`${API_BASE_URL}/api/chat`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -605,7 +607,7 @@ export const AiAssistantView: React.FC<AiAssistantViewProps> = ({
           m.id === aiMsgId
             ? {
                 ...m,
-                text: `⚠️ Server se rabta nahi ho saka. Barah-e-karam check karein ke FastAPI backend (http://localhost:8000) active hai. (${err.message || 'Network Error'})`,
+                text: `⚠️ Server se rabta nahi ho saka. Barah-e-karam check karein ke Kisan Dost backend active hai. (${err.message || 'Network Error'})`,
                 isStreaming: false,
                 agentToolTag: 'Connection Notice',
               }

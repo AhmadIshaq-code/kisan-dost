@@ -5,3 +5,6 @@ __pycache__/
 .pytest_cache/
 .vscode/
 .idea/
+*.db
+*.db-shm
+*.db-wal
