@@ -1,121 +1,102 @@
+<div align="center">
+
 # 🌾 Kisan Dost
 
 ### An Agentic AI Farming Assistant for Pakistani Farmers
 
-Kisan Dost is a **multi-agent Agentic AI agricultural assistant** designed to help Pakistani farmers make better farming decisions through natural-language interaction.
+*Understand the farmer. Route intelligently. Use reliable tools. Respond safely.*
 
-The system uses a central **Triage Agent** to understand a farmer's request and route it to a specialized agricultural agent. Each specialist can use dedicated tools, structured data models, controlled datasets, external APIs, and safety guardrails to produce reliable and practical responses.
+[![Live App](https://img.shields.io/badge/🌐_Live_App-Vercel-000000?style=for-the-badge)](https://kisan-dost-alpha.vercel.app)
+[![Backend API](https://img.shields.io/badge/⚙️_Backend_API-Railway-0B0D0E?style=for-the-badge)](https://kisan-dost-production.up.railway.app)
+[![GitHub Repo](https://img.shields.io/badge/📦_Source-GitHub-181717?style=for-the-badge&logo=github)](https://github.com/AhmadIshaq-code/kisan-dost)
 
-Kisan Dost currently focuses on:
+![React](https://img.shields.io/badge/React_19-20232A?style=flat-square&logo=react&logoColor=61DAFB)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-646CFF?style=flat-square&logo=vite&logoColor=white)
+![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS_v4-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white)
+![Python](https://img.shields.io/badge/Python_3.10+-3776AB?style=flat-square&logo=python&logoColor=white)
+![Pydantic](https://img.shields.io/badge/Pydantic-E92063?style=flat-square&logo=pydantic&logoColor=white)
+![Groq](https://img.shields.io/badge/Groq-F55036?style=flat-square)
+![Vercel](https://img.shields.io/badge/Vercel-000000?style=flat-square&logo=vercel&logoColor=white)
+![Railway](https://img.shields.io/badge/Railway-0B0D0E?style=flat-square&logo=railway&logoColor=white)
 
-- 🌱 Crop Recommendation
-- 🐛 Pest & Disease Diagnosis
-- 🧪 Fertilizer Calculation
-- 🌦️ Weather & Irrigation Information
-- 📈 Mandi Price Lookup
-- 💰 Profit & Break-Even Estimation
-- 🏛️ Government Agricultural Support
+</div>
 
-The project demonstrates practical implementation of **Agentic AI concepts using the OpenAI Agents SDK**, with model inference configured through Groq's OpenAI-compatible API.
+---
+
+**Kisan Dost** is a multi-agent **Agentic AI agricultural assistant** designed to help Pakistani farmers make better farming decisions through natural-language interaction — in Urdu, Roman Urdu, or English.
+
+Instead of relying on a single chatbot, Kisan Dost uses a **Triage Agent** to understand the farmer's intent and intelligently route each request to a specialized agricultural agent. Every specialist can call dedicated **function tools, controlled datasets, external APIs, deterministic calculations, farmer context, session memory, and safety guardrails** to produce practical and safer responses.
+
+> **Understand → Route → Specialize → Use Tools → Structure → Validate → Respond**
 
 ---
 
 ## 📑 Table of Contents
 
-- [Overview](#-overview)
-- [Problem](#-problem)
-- [Solution](#-solution)
-- [Key Features](#-key-features)
-- [System Architecture](#-system-architecture)
+- [The Problem](#-problem)
+- [The Solution](#-solution)
+- [System Architecture](#️-system-architecture)
+- [What Kisan Dost Can Do](#-what-kisan-dost-can-do)
 - [Agent Architecture](#-agent-architecture)
-- [Agents](#-agents)
-- [Tools](#-tools)
-- [Context Management](#-context-management)
+- [Function Tools](#-function-tools)
+- [Farmer Context](#-farmer-context)
 - [Session Memory](#-session-memory)
-- [Guardrails & Safety](#-guardrails--safety)
+- [Guardrails & Safety](#️-guardrails--safety)
 - [Structured Outputs](#-structured-outputs)
-- [Data Sources](#-data-sources)
-- [Technology Stack](#-technology-stack)
+- [Real-Time Streaming](#-real-time-streaming)
+- [API Endpoints](#-api-endpoints)
+- [Technology Stack](#️-technology-stack)
 - [Project Structure](#-project-structure)
-- [Installation](#-installation)
-- [Configuration](#-configuration)
-- [Running the Application](#-running-the-application)
+- [Local Installation](#-local-installation)
+- [Production Deployment](#️-production-deployment)
 - [Demo Videos](#-demo-videos)
 - [Example Workflow](#-example-workflow)
-- [OpenAI Agents SDK Concepts](#-openai-agents-sdk-concepts)
+- [OpenAI Agents SDK Concepts](#-openai-agents-sdk-concepts-demonstrated)
 - [Testing Checklist](#-testing-checklist)
-- [Safety Considerations](#-safety-considerations)
-- [Current Limitations](#-current-limitations)
+- [Current Limitations](#️-current-limitations)
 - [Future Roadmap](#-future-roadmap)
-- [Future Integration](#-future-integration)
 - [Security](#-security)
 - [Project Philosophy](#-project-philosophy)
+- [Project Status](#-project-status)
 
 ---
 
-# 🌾 Overview
+## 🎯 Problem
 
-Agricultural decisions often require farmers to consider multiple factors simultaneously:
+Farmers often need information from multiple agricultural domains at the same time. A single farming decision may involve:
 
-- Which crop is suitable?
-- How much fertilizer is required?
-- What is the expected profit?
-- What is the current weather?
-- What is the mandi price?
-- Is there a government subsidy?
-- What pest or disease may be affecting the crop?
+- Crop selection
+- Soil and water availability
+- Fertilizer requirements
+- Weather conditions
+- Pest and disease identification
+- Mandi (market) prices
+- Farming costs
+- Expected profit
+- Government support programs
 
-Instead of building one large chatbot responsible for every agricultural problem, **Kisan Dost uses specialized AI agents**, each responsible for a specific domain.
-
-The architecture separates:
-
-> **Intent Understanding → Agent Routing → Specialist Reasoning → Tool Execution → Structured Data → Safety Validation → Farmer Response**
-
-This makes the system modular, easier to extend, and better suited for demonstrating real Agentic AI behavior.
-
----
-
-# ❗ Problem
-
-Farmers frequently need information from multiple agricultural domains.
-
-A single question may require:
-
-- agricultural knowledge,
-- mathematical calculations,
-- external weather information,
-- market information,
-- government-program information,
-- and safety-aware pesticide guidance.
-
-A conventional chatbot architecture would typically look like:
+A traditional chatbot architecture usually looks like this:
 
 ```text
-Farmer
-   ↓
-LLM
-   ↓
-Answer
-
+Farmer → LLM → Answer
 ```
 
-This approach can make it difficult to:
-
-- separate responsibilities,
-- guarantee deterministic calculations,
-- control sensitive outputs,
-- integrate multiple tools,
-- maintain trusted farmer information,
-- and scale the system with additional capabilities.
+This makes it difficult to separate responsibilities, perform reliable calculations, control sensitive outputs, integrate specialized tools, and maintain trusted farmer information.
 
 ---
 
-# 💡 Solution
+## 💡 Solution
 
-Kisan Dost introduces a **multi-agent architecture**.
+Kisan Dost uses a **multi-agent architecture** where different agricultural responsibilities are handled by specialized agents, connected through the Triage Agent's **handoffs**:
 
 ```text
 Farmer
+   ↓
+React Web App
+   ↓
+FastAPI API Bridge
    ↓
 Input Guardrail
    ↓
@@ -129,423 +110,324 @@ Structured Result
    ↓
 Output Safety Guardrail
    ↓
-Farmer
-
+Farmer Response
 ```
 
-The Triage Agent determines the farmer's intent and performs a handoff to exactly one specialist.
-
-For example:
+**Example routing:**
 
 ```text
 "Rabi mein kaunsi crop lagaoon?"
-            ↓
-      Triage Agent
-            ↓
-      Agronomy Agent
-            ↓
-      Crop Advisor Tool
-
+        ↓
+   Triage Agent
+        ↓
+  Agronomy Agent
+        ↓
+   crop_advisor
+        ↓
+Crop Recommendation
 ```
 
-While:
-
-```text
-"Fertilizer subsidy mil sakti hai?"
-            ↓
-      Triage Agent
-            ↓
- Government Support Agent
-            ↓
- Government Support Tool
-
-```
-
-This separation allows Kisan Dost to combine LLM reasoning with deterministic application logic and external data.
-
 ---
 
-# ✨ Key Features
+## 🏗️ System Architecture
 
-## 🌱 Crop Recommendation
+<div align="center">
+  <img src="./assets/architecture-diagram.jpeg" alt="Kisan Dost end-to-end architecture — from Farmer, through the React frontend, FastAPI backend, the multi-agent AI layer, tools & data layer, to the safety and response layer" width="100%" />
+  <br/>
+  <em>End-to-end flow: Farmer → React Frontend → FastAPI Backend → Agentic AI Layer → Tools & Data Layer → Safety & Response Layer</em>
+</div>
 
-The Agronomy Agent can recommend suitable crops based on the farmer's:
+<br/>
 
-- district,
-- soil type,
-- season,
-- water availability,
-- and farming context.
-
-Crop recommendations are generated through the controlled `crop_advisor` tool.
-
----
-
-## 🧪 Fertilizer Calculator
-
-The Finance Agent provides fertilizer calculations for supported crops.
-
-Currently the system handles:
-
-- DAP
-- Urea
-
-The calculator determines:
-
-- bags per acre,
-- total bags,
-- price per bag,
-- total fertilizer cost.
-
-The calculations are performed by deterministic Python logic instead of asking the LLM to perform the mathematical calculation itself.
-
----
-
-## 💰 Profit Estimation
-
-The Finance Agent can estimate:
-
-- total revenue,
-- total farming cost,
-- net profit,
-- break-even yield.
-
-The calculation uses controlled crop-economic data and farmer acreage from the application context.
-
----
-
-## 🌦️ Weather Information
-
-The Weather Agent integrates with **Open-Meteo** to retrieve external weather information.
-
-The weather tool can provide:
-
-- current temperature,
-- humidity,
-- wind speed,
-- precipitation,
-- daily maximum temperature,
-- daily minimum temperature,
-- precipitation probability.
-
-This allows weather information to come from an external weather API rather than being invented by the language model.
-
----
-
-## 🐛 Pest & Disease Diagnosis
-
-The Pest Doctor Agent analyzes farmer-provided crop symptoms.
-
-The system supports:
-
-- possible pest/disease identification,
-- symptoms,
-- treatment guidance,
-- safety notes.
-
-The project intentionally avoids inventing pesticide dosages when verified dosage information is unavailable.
-
----
-
-## 📈 Mandi Price Lookup
-
-The Market Agent can retrieve crop prices from the controlled mandi dataset.
-
-Supported examples include:
-
-- Wheat
-- Chickpea
-- Maize
-
-The current implementation uses a **controlled/demo dataset** and should not be interpreted as guaranteed live market pricing.
-
----
-
-## 🏛️ Government Support Finder
-
-The Government Support Agent can search agricultural support programs based on:
-
-- farmer province,
-- support requirement,
-- program type,
-- benefit information.
-
-The farmer's province is obtained from the trusted `FarmerProfile` context.
-
-Government-support information in the current implementation is based on controlled/demo data and should be verified against official sources before real-world use.
-
----
-
-# 🏗️ System Architecture
+<details>
+<summary><strong>Mermaid diagram (source view)</strong></summary>
 
 ```mermaid
-flowchart TD
-    A[👨‍🌾 Farmer] --> B[Input Guardrail]
+flowchart LR
 
-    B --> C[Triage Agent]
+    A["👨‍🌾 Farmer"] --> B["🌐 React Web App"]
 
-    C --> D[Agronomy Agent]
-    C --> E[Pest Doctor Agent]
-    C --> F[Weather Agent]
-    C --> G[Market Agent]
-    C --> H[Finance Agent]
-    C --> I[Government Support Agent]
+    B -->|"HTTPS / SSE"| C["⚡ FastAPI API Bridge"]
 
-    D --> D1[Crop Advisor Tool]
-    E --> E1[Pest Disease Tool]
-    F --> F1[Open-Meteo API]
-    G --> G1[Mandi Dataset]
-    H --> H1[Fertilizer Calculator]
-    H --> H2[Profit Estimator]
-    I --> I1[Government Support Dataset]
+    C --> D["🛡️ Input Guardrail"]
 
-    D1 --> J[Structured Results]
-    E1 --> J
-    F1 --> J
-    G1 --> J
-    H1 --> J
-    H2 --> J
-    I1 --> J
+    D --> E["🤖 Triage Agent"]
 
-    J --> K[Output Safety Guardrail]
-    K --> L[👨‍🌾 Farmer Response]
+    E --> F["🌱 Agronomy Agent"]
+    E --> G["🐛 Pest Doctor Agent"]
+    E --> H["🌦️ Weather Agent"]
+    E --> I["📈 Market Agent"]
+    E --> J["💰 Finance Agent"]
+    E --> K["🏛️ Government Support Agent"]
 
+    F --> F1["crop_advisor"]
+    G --> G1["pest_disease_tool"]
+    H --> H1["Open-Meteo API"]
+    I --> I1["Mandi Dataset"]
+    J --> J1["fertilizer_calculator"]
+    J --> J2["profit_estimator"]
+    K --> K1["Government Support Dataset"]
+
+    L["👨‍🌾 FarmerProfile / Context"] --> E
+    L --> F
+    L --> G
+    L --> H
+    L --> I
+    L --> J
+    L --> K
+
+    M["💾 SQLiteSession"] --> E
+
+    F1 --> N["📊 Structured Result"]
+    G1 --> N
+    H1 --> N
+    I1 --> N
+    J1 --> N
+    J2 --> N
+    K1 --> N
+
+    N --> O["🛡️ Output Safety Guardrail"]
+    O --> P["👨‍🌾 Farmer Response"]
+
+    Q["☁️ Groq\nopenai/gpt-oss-20b"] --> E
+```
+
+</details>
+
+### Deployment Architecture
+
+```text
+                  🌐 Internet
+                       │
+                       ▼
+        ┌───────────────────────────┐
+        │          Vercel           │
+        │   React + TypeScript UI   │
+        └─────────────┬─────────────┘
+                       │
+                  HTTPS / SSE
+                       │
+                       ▼
+        ┌───────────────────────────┐
+        │          Railway          │
+        │      FastAPI Backend      │
+        └─────────────┬─────────────┘
+                       │
+                       ▼
+        ┌───────────────────────────┐
+        │           Groq            │
+        │       GPT-OSS-20B         │
+        │  OpenAI-Compatible API    │
+        └───────────────────────────┘
 ```
 
 ---
 
-# 🤖 Agent Architecture
+## ✨ What Kisan Dost Can Do
 
-## Triage Agent
+| | Capability |
+|---|---|
+| 🌱 | **Crop Recommendation** — season, district, soil & water aware |
+| 🐛 | **Pest & Disease Diagnosis** — symptom-based analysis |
+| 🧪 | **Fertilizer Calculation** — deterministic cost & quantity |
+| 🌦️ | **Weather & Irrigation Information** — live via Open-Meteo |
+| 📈 | **Mandi Price Lookup** — controlled/demo market data |
+| 💰 | **Profit & Break-Even Estimation** — revenue, cost, net profit |
+| 🏛️ | **Government Agricultural Support** — province/eligibility aware |
+| 👨‍🌾 | **Farmer Profile Context** — remembers who you are |
+| 💾 | **Conversation Session Memory** — multi-turn conversations |
+| 🛡️ | **Input & Output Safety Guardrails** — keeps responses safe |
+| ⚡ | **Real-Time Streaming AI Responses** — via Server-Sent Events |
 
-**Purpose:** Understand farmer intent and route to specialists.
+---
+
+## 🤖 Agent Architecture
+
+### 1. Triage Agent
+
+**Purpose:** the central routing agent.
 
 **Responsibilities:**
+- Understand farmer intent
+- Classify the request
+- Route the request to the appropriate specialist
+- Perform agent handoffs
+- Handle clearly unrelated requests safely
 
-- Parse farmer query
-- Classify request intent
-- Perform handoff to appropriate specialist
-- Provide default response for non-agricultural requests
-
-**Example:**
-
+```text
+Farmer: "Meri cotton mein yellow spots hain"
+        ↓
+   Triage Agent
+        ↓
+ Pest Doctor Agent
 ```
-Farmer: "Meri cotton mein kaun si bimari hai?"
-Triage: → Pest Doctor Agent
+
+The Triage Agent itself does not perform specialist calculations or directly execute specialist tools.
+
+### 2. 🌱 Agronomy Agent
+
+**Purpose:** agricultural and crop recommendations.
+
+**Capabilities:** crop recommendation, season-based recommendations, district-aware recommendations, soil-aware recommendations, water-availability considerations.
+
+**Tool:** `crop_advisor`
+
+```text
+Farmer: "Rabi mein Faisalabad ke liye crop recommend karo"
+        ↓
+  Agronomy Agent
+        ↓
+   crop_advisor
+        ↓
+Recommended Crops
 ```
+
+### 3. 🐛 Pest Doctor Agent
+
+**Purpose:** analyzes farmer-provided symptoms and identifies possible crop pests or diseases.
+
+**Capabilities:** pest/disease identification, symptom analysis, treatment guidance, agricultural safety guidance.
+
+**Tool:** `pest_disease_tool`
+
+> The system intentionally avoids inventing pesticide dosages when verified dosage information is unavailable.
+
+### 4. 🌦️ Weather Agent
+
+**Purpose:** provides weather information using an external weather API.
+
+**External API:** [Open-Meteo](https://open-meteo.com/)
+
+Retrieves: temperature, humidity, wind speed, precipitation, daily max/min temperature, precipitation probability — sourced externally rather than generated from the LLM's own knowledge.
+
+### 5. 📈 Market Agent
+
+**Purpose:** provides mandi price information.
+
+**Tool:** `market_tool`
+
+Supports demo pricing for: Wheat, Chickpea, Maize, Cotton.
+
+> Mandi prices in the current implementation are demo/controlled values and should not be treated as guaranteed live market prices.
+
+### 6. 💰 Finance Agent
+
+**Purpose:** handles deterministic farming calculations.
+
+**Tools:** `fertilizer_calculator`, `profit_estimator`
+
+- **Fertilizer Calculator** — bags per acre, total bags, price per bag, total fertilizer cost (currently DAP, Urea).
+- **Profit Estimator** — expected revenue, farming cost, net profit, profit per acre, break-even info where supported.
+
+Calculations are performed using deterministic application logic instead of asking the LLM to do the math itself.
+
+### 7. 🏛️ Government Support Agent
+
+**Purpose:** helps farmers discover relevant agricultural support programs.
+
+**Tool:** `government_support_tool`
+
+Considers: province, support requirement, program type, eligibility information, benefits.
+
+> The current implementation uses controlled/demo government-support data and should be verified against official sources before real-world decisions.
 
 ---
 
-## Agronomy Agent
-
-**Purpose:** Provide crop advisory and agricultural recommendations.
-
-**Capabilities:**
-
-- crop_advisor: Recommend crops for given district, season, soil type
-- Provides region-specific agricultural guidance
-
-**Example:**
-
-```
-Farmer: "Rabi season mein Faisalabad mein kaunsi crop lagaoon?"
-Agronomy: → Calls crop_advisor tool → Returns 3-5 crop recommendations
-```
-
----
-
-## Pest Doctor Agent
-
-**Purpose:** Diagnose pests and diseases from symptoms.
-
-**Capabilities:**
-
-- pest_disease_tool: Identify pest/disease from symptoms
-- Provides treatment recommendations
-- Includes safety guardrails for pesticide information
-
-**Example:**
-
-```
-Farmer: "Meri crop par yellow spots hain"
-Pest Doctor: → Calls pest_disease_tool → Provides diagnosis and treatment
-```
-
----
-
-## Weather Agent
-
-**Purpose:** Provide weather information via external API.
-
-**Capabilities:**
-
-- weather_tool: Fetch current and forecast weather
-- Integrates with Open-Meteo API
-- Returns temperature, humidity, precipitation, wind speed
-
-**Example:**
-
-```
-Farmer: "Aaj kaisa weather hai Lahore mein?"
-Weather: → Calls weather_tool → Returns current conditions
-```
-
----
-
-## Market Agent
-
-**Purpose:** Provide mandi prices for crops.
-
-**Capabilities:**
-
-- market_tool: Lookup crop prices from controlled dataset
-- Returns current mandi rates
-- Supports wheat, chickpea, maize, and other crops
-
-**Example:**
-
-```
-Farmer: "Wheat ka mandi price kya hai?"
-Market: → Calls market_tool → Returns price data
-```
-
----
-
-## Finance Agent
-
-**Purpose:** Provide financial calculations for farming operations.
-
-**Capabilities:**
-
-- fertilizer_calculator: Calculate fertilizer bags, cost
-- profit_estimator: Estimate revenue, cost, profit
-- Deterministic calculations based on established formulas
-
-**Example:**
-
-```
-Farmer: "Mere 5 acre mein DAP kitna lagna hoga?"
-Finance: → Calls fertilizer_calculator → Returns bags and cost
-```
-
----
-
-## Government Support Agent
-
-**Purpose:** Help farmers find government agricultural programs.
-
-**Capabilities:**
-
-- government_support_tool: Search support programs by province
-- Returns subsidy information, eligibility, benefits
-- Based on controlled/demo dataset
-
-**Example:**
-
-```
-Farmer: "Punjab mein fertilizer subsidy mil sakti hai?"
-Government Support: → Calls government_support_tool → Returns program info
-```
-
----
-
-# 🧩 Tools
-
-The application uses **function tools** to implement agent capabilities.
-
-Each agent calls one or more function tools through the OpenAI Agents framework:
+## 🧩 Function Tools
 
 | Tool | Agent | Purpose |
-| --- | --- | --- |
-| `crop_advisor` | Agronomy | Recommend crops by district/season/soil |
-| `pest_disease_tool` | Pest Doctor | Diagnose pest/disease from symptoms |
-| `weather_tool` | Weather | Fetch weather data via Open-Meteo API |
+|---|---|---|
+| `crop_advisor` | Agronomy | Recommend suitable crops |
+| `pest_disease_tool` | Pest Doctor | Diagnose possible pests/diseases |
+| `weather_tool` | Weather | Retrieve weather information |
 | `market_tool` | Market | Lookup mandi prices |
-| `fertilizer_calculator` | Finance | Calculate fertilizer requirement |
-| `profit_estimator` | Finance | Estimate farming profit |
-| `government_support_tool` | Government Support | Find govt programs by province |
+| `fertilizer_calculator` | Finance | Calculate fertilizer requirements and costs |
+| `profit_estimator` | Finance | Estimate farming revenue, cost and profit |
+| `government_support_tool` | Government Support | Find agricultural support programs |
 
 ---
 
-# 📋 Context Management
+## 👨‍🌾 Farmer Context
 
-The application uses **RunContextWrapper** to provide farmer profile context to all tools.
-
-### FarmerProfile
+Kisan Dost uses **`RunContextWrapper`** to give agents and tools access to trusted farmer information — so tools don't need to repeatedly ask the farmer for the same details.
 
 ```python
-class FarmerProfile:
-    name: str
-    province: str
-    district: str
-    acreage: float
-    soil_type: str
+FarmerProfile(
+    name="Ahmad",
+    district="Faisalabad",
+    province="Punjab",
+    acres=5,
+    soil_type="loamy",
+    season="Rabi",
+    water_availability="limited",
+)
 ```
 
-This context is stored in `RunContext` and is available to all tool functions.
-
-**Benefit:** Tools can reference farmer information without asking the farmer to repeat it.
-
----
-
-# 💾 Session Memory
-
-The application uses **SQLiteSession** to maintain conversation history.
-
-### Database Table
-
-| Column | Purpose |
-| --- | --- |
-| `message_id` | Unique identifier |
-| `timestamp` | When message was sent |
-| `sender` | Who sent it (farmer/agent) |
-| `content` | Message text |
-| `agent_name` | Which agent processed it |
-
-### Usage
-
-```python
-session = SQLiteSession(db_path="farmer_conversations.db")
-session.add_message(sender="farmer", content="Query", agent_name="Triage")
-history = session.get_history(limit=10)
+```text
+Farmer Profile
+      │
+      ├── District
+      ├── Province
+      ├── Acres
+      ├── Soil Type
+      ├── Season
+      └── Water Availability
 ```
 
 ---
 
-# 🛡️ Guardrails & Safety
+## 💾 Session Memory
 
-Kisan Dost implements **input and output guardrails** to ensure safe and appropriate responses.
+Kisan Dost uses **`SQLiteSession`** to maintain conversation history across turns, so follow-up questions don't need to repeat context:
+
+```text
+Farmer: "Rabi mein crop recommend karo"
+        ↓
+  Agronomy Agent → Chickpea recommended
+        ↓
+Farmer: "Is crop ka fertilizer kitna chahiye?"
+```
+
+**Context vs. Session — an important distinction:**
+
+```text
+RunContextWrapper  →  Trusted Farmer Information
+SQLiteSession       →  Conversation History
+```
+
+---
+
+## 🛡️ Guardrails & Safety
 
 ### Input Guardrail
+Checks the latest farmer request and prevents clearly unrelated queries from entering the agricultural workflow.
 
-Prevents non-agricultural queries:
-
+```text
+✅ "Meri wheat mein pest hai"
+✅ "Fertilizer ka cost kitna hoga?"
+❌ "Mujhe Python sikhao"
 ```
-✅ Allowed: "Meri wheat mein pest hai"
-❌ Blocked: "Mujhe coding sikhao"
-```
 
-### Output Guardrails
+### Output Safety Guardrail
+Validates generated responses before they're returned to the farmer, with protections around:
 
-Prevent unsafe responses:
-
-1. **Pesticide Safety:** Does not invent dosages
-2. **Medical Claims:** Does not provide human medical advice
-3. **Guaranteed Benefits:** Does not guarantee subsidy approval
-4. **Currency Validation:** Validates financial figures
+| Area | Protection |
+|---|---|
+| 🧪 Pesticide Safety | Never invents exact dosages; directs farmers to product labels and qualified professionals |
+| 🏥 Human Medical Advice | The assistant does not provide human medical advice |
+| 🏛️ Government Benefits | Never guarantees subsidy or program approval |
+| 💰 Financial Data | Figures are validated against controlled data and deterministic calculations |
 
 ---
 
-# 📊 Structured Outputs
+## 📊 Structured Outputs
 
-All agent responses use **Pydantic models** for structured, predictable output.
-
-### Example: Crop Recommendation
+Kisan Dost uses **Pydantic** models for structured, predictable data:
 
 ```python
 class CropRecommendation(BaseModel):
     crop_name: str
-    suitability_score: float  # 0-1
+    suitability_score: float
     season: str
     water_requirement: str
     expected_yield: str
@@ -553,570 +435,409 @@ class CropRecommendation(BaseModel):
     government_support: Optional[str]
 ```
 
-### Benefits
-
-- Type safety
-- API-friendly JSON
-- Validated responses
-- Consistent farmer experience
+**Benefits:** type safety, validation, predictable responses, API-friendly data, consistent frontend rendering.
 
 ---
 
-# 📚 Data Sources
+## ⚡ Real-Time Streaming
 
-### Controlled Agricultural Dataset
+The web app streams responses using **Server-Sent Events (SSE)**, connecting to:
 
-- Crops by district and season
-- Crop water requirements
-- Expected yields
-- Economic data (costs, prices)
+```text
+POST /api/chat/stream
+```
 
-### Controlled Pest/Disease Dataset
-
-- Common pests and diseases
-- Symptoms
-- Treatment methods
-- Safety information
-
-### Mandi Prices (Demo)
-
-- Wheat, chickpea, maize, cotton
-- Base prices (not live market)
-- Should be replaced with live API in production
-
-### Government Support (Demo)
-
-- Provincial subsidies
-- Eligibility criteria
-- Benefit amounts
-- Contact information
+The backend streams events: `agent`, `tool`, `delta`, `done`, `error` — so the UI can show agent activity, tool execution, progressive response generation, completion state, and errors in real time instead of waiting for the full answer.
 
 ---
 
-# 🛠️ Technology Stack
+## 🌐 API Endpoints
+
+| Method | Endpoint | Purpose |
+|---|---|---|
+| `GET` | `/api/health` | Backend health check |
+| `POST` | `/api/chat` | Standard AI chat |
+| `POST` | `/api/chat/stream` | Streaming AI chat via SSE |
+
+---
+
+## 🛠️ Technology Stack
 
 | Component | Technology |
-| --- | --- |
-| **Language** | Python 3.10+ |
-| **LLM Framework** | OpenAI Agents SDK |
-| **Model Provider** | Groq (OpenAI-compatible API) |
-| **Data Validation** | Pydantic v2 |
-| **Session Storage** | SQLite |
-| **Weather API** | Open-Meteo (free, no key required) |
-| **Deployment** | Terminal / CLI |
+|---|---|
+| Frontend | React 19 |
+| Language | TypeScript |
+| Build Tool | Vite |
+| Styling | Tailwind CSS v4 |
+| Backend | FastAPI |
+| AI Framework | OpenAI Agents SDK |
+| Model Provider | Groq |
+| Model | `openai/gpt-oss-20b` |
+| API Protocol | REST + SSE |
+| Data Validation | Pydantic |
+| Session Memory | SQLiteSession |
+| Weather | Open-Meteo |
+| Frontend Deployment | Vercel |
+| Backend Deployment | Railway |
+| Version Control | Git + GitHub |
 
 ---
 
-# 📁 Project Structure
+## 📁 Project Structure
 
-```
+```text
 kisan-dost/
-├── README.md
+│
+├── app_agents/
+│   ├── triage.py
+│   ├── agronomy.py
+│   ├── pest_doctor.py
+│   ├── weather.py
+│   ├── market.py
+│   ├── finance.py
+│   └── govt_support.py
+│
+├── guardrails/
+│   ├── input_guardrail.py
+│   └── output_guardrail.py
+│
+├── data/
+│   └── controlled agricultural datasets
+│
+├── Frontend_app/
+│   ├── src/
+│   │   ├── components/
+│   │   ├── types.ts
+│   │   └── ...
+│   ├── package.json
+│   ├── vite.config.ts
+│   └── vercel.json
+│
+├── api.py
+├── main.py
 ├── requirements.txt
 ├── .env.example
 ├── .gitignore
-│
-├── main.py                 # Entry point
-├── config.py               # Configuration
-│
-├── core/
-│   ├── __init__.py
-│   ├── triage_agent.py     # Triage agent definition
-│   ├── agents/
-│   │   ├── agronomy.py
-│   │   ├── pest_doctor.py
-│   │   ├── weather.py
-│   │   ├── market.py
-│   │   ├── finance.py
-│   │   └── government_support.py
-│   │
-│   └── tools/
-│       ├── __init__.py
-│       ├── crop_advisor.py
-│       ├── pest_disease.py
-│       ├── weather_tool.py
-│       ├── market_tool.py
-│       ├── fertilizer_calculator.py
-│       ├── profit_estimator.py
-│       └── government_support_tool.py
-│
-├── models/
-│   ├── __init__.py
-│   ├── farmer_profile.py    # FarmerProfile Pydantic model
-│   ├── responses.py         # Response Pydantic models
-│   └── data_models.py       # Data validation models
-│
-├── context/
-│   ├── __init__.py
-│   ├── run_context.py       # RunContextWrapper
-│   └── farmer_context.py    # Farmer information storage
-│
-├── safety/
-│   ├── __init__.py
-│   ├── input_guardrail.py   # Input validation
-│   └── output_guardrail.py  # Output safety checks
-│
-├── storage/
-│   ├── __init__.py
-│   ├── sqlite_session.py    # Session memory
-│   └── data/
-│       ├── crops.json       # Crop database
-│       ├── pests.json       # Pest/disease database
-│       ├── mandi.json       # Mandi price dataset
-│       └── government_programs.json
-│
-└── utils/
-    ├── __init__.py
-    └── helpers.py           # Utility functions
+└── README.md
 ```
 
 ---
 
-# 🚀 Installation
+## 🚀 Local Installation
 
 ### Prerequisites
 
-- Python 3.10 or higher
-- pip (Python package manager)
+- Python 3.10+
+- Node.js
+- npm
 - Git
 
-### Steps
-
-1. **Clone the repository:**
+### 1. Clone Repository
 
 ```bash
-git clone https://github.com/<YOUR_USERNAME>/kisan-dost.git
+git clone https://github.com/AhmadIshaq-code/kisan-dost.git
 cd kisan-dost
 ```
 
-2. **Create a virtual environment:**
+### 2. Backend Setup
+
+Create a virtual environment:
 
 ```bash
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+python -m venv .venv
 ```
 
-3. **Install dependencies:**
+**Windows**
+```bash
+.venv\Scripts\activate
+```
+
+**Linux / macOS**
+```bash
+source .venv/bin/activate
+```
+
+Install Python dependencies:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-4. **Set up environment variables:**
+### 3. Configure Environment Variables
+
+Create `.env` from `.env.example`:
+
+```env
+LLM_PROVIDER=groq
+GROQ_API_KEY=your_groq_api_key
+GROQ_MODEL=openai/gpt-oss-20b
+```
+
+⚠️ Never commit your real API key.
+
+### 4. Run Backend
 
 ```bash
-cp .env.example .env
+uvicorn api:app --host 0.0.0.0 --port 8000
 ```
 
-Edit `.env` and add your API keys:
+- Backend: `http://localhost:8000`
+- Health check: `http://localhost:8000/api/health`
 
-```
-GROQ_API_KEY=your_groq_api_key_here
-```
-
----
-
-# ⚙️ Configuration
-
-### .env File
-
-```
-# Groq API Configuration
-GROQ_API_KEY=gsk_...your_key_here...
-
-# Model Configuration
-MODEL_NAME=llama-3.1-70b-versatile
-TEMPERATURE=0.7
-MAX_TOKENS=1000
-
-# Database
-DATABASE_PATH=./data/conversations.db
-
-# Logging
-LOG_LEVEL=INFO
-```
-
-### config.py
-
-```python
-import os
-from dotenv import load_dotenv
-
-load_dotenv()
-
-GROQ_API_KEY = os.getenv("GROQ_API_KEY")
-MODEL_NAME = os.getenv("MODEL_NAME", "llama-3.1-70b-versatile")
-TEMPERATURE = float(os.getenv("TEMPERATURE", "0.7"))
-MAX_TOKENS = int(os.getenv("MAX_TOKENS", "1000"))
-DATABASE_PATH = os.getenv("DATABASE_PATH", "./data/conversations.db")
-```
-
----
-
-# ▶️ Running the Application
-
-### Start the CLI
+### 5. Run Frontend
 
 ```bash
-python main.py
+cd Frontend_app
+npm install
 ```
 
-### Example Interaction
+Create a frontend environment variable if needed:
 
+```env
+VITE_API_BASE_URL=http://localhost:8000
 ```
-🌾 Kisan Dost - Agricultural Assistant
-======================================
 
-👨‍🌾 Farmer: Meri cotton mein yellow spots hain
+Run the dev server:
 
-🤖 Triage: Samajh gaya. Pest Doctor se milata hoon.
-
-🐛 Pest Doctor: Symptoms dekh raha hoon...
-
-Possible Diagnosis: Bacterial Blight
-- Symptoms: Yellow spots, leaf yellowing
-- Treatment: Use resistant varieties, bacterial fungicide
-- ⚠️ Safety: Consult local agricultural officer for dosage
-
-👨‍🌾 Farmer: Shukriya!
+```bash
+npm run dev
 ```
+
+The Vite development server will print the local frontend URL.
 
 ---
 
-# 🎥 Demo Videos
+## ☁️ Production Deployment
 
-## 🎬 Kisan Dost Agent Project Demo
+Kisan Dost uses a separated frontend/backend deployment architecture.
 
-[Watch Full Project Demo](https://drive.google.com/file/d/1-62ahWog5dlVFlNfrxHPzon-UlQXH6kZ/view?usp=sharing)
-
-This video demonstrates the complete Kisan Dost Agentic AI project, including the multi-agent architecture, Triage Agent, specialist agents, handoffs, Function Tools, Context, Sessions, and Guardrails.
-
-## 🖥️ Kisan Dost Frontend Demo
-
-[Watch Frontend Demo](https://drive.google.com/file/d/10IjYVs4HO-IScISIAGfHAkh4YYkkncH6/view?usp=sharing)
-
-This video demonstrates the standalone Kisan Dost frontend prototype, including the Dashboard, AI Assistant, Agent Activity, Crop Advisor, Pest Doctor, Weather, Market & Finance, Government Support, and Farmer Profile.
-
----
-
-# 📖 Example Workflow
-
-## Scenario: Farmer asks for crop recommendation
-
-```
-Farmer: "Rabi mein Punjab mein kaunsi crop lagaoon? Mera soil loamy hai."
-
-1. Input Guardrail ✅ (Agricultural query allowed)
-
-2. Triage Agent
-   - Parses: Rabi season, Punjab province, crop recommendation
-   - Routes: → Agronomy Agent
-
-3. Agronomy Agent
-   - Calls: crop_advisor(province="Punjab", season="Rabi", soil="loamy")
-   
-4. crop_advisor Tool
-   - Returns: [Wheat (score: 0.95), Chickpea (0.87), Barley (0.79)]
-
-5. Structure
-   - Formats response as: CropRecommendation Pydantic model
-
-6. Output Guardrail ✅
-   - Validates: No unsupported claims, proper formatting
-
-7. Response to Farmer
-   "Aap ke liye best hain: Wheat (95%), Chickpea (87%), Barley (79%)"
+```text
+Frontend:  React + Vite → Vercel
+Backend:   FastAPI → Railway
+AI Model:  Railway Backend → Groq API → openai/gpt-oss-20b
 ```
 
----
+**Production flow:**
 
-# 🤖 OpenAI Agents SDK Concepts
+```text
+Farmer → Vercel → HTTPS/SSE → Railway → FastAPI → Kisan Dost Agentic AI → Groq
+```
 
-Kisan Dost uses several key concepts from the OpenAI Agents SDK:
-
-| Concept | Usage | Purpose |
-| --- | --- | --- |
-| `Agent` | Creates Triage and specialist agents | Represents autonomous agents |
-| `Runner` | Executes agent runs | Processes requests through agents |
-| `Function Tools` | Connect agents to Python logic | Agents can call Python functions |
-| `Handoffs` | Routes between agents | Triage → Specialists |
-| `RunContextWrapper` | Provides farmer context to tools | Access shared farmer data |
-| `Context` | Stores trusted farmer information | Central data store |
-| `SQLiteSession` | Maintains conversation history | Session memory |
-| `Input Guardrails` | Restrict requests to agriculture | Safety layer |
-| `Output Guardrails` | Validate final responses | Response safety |
-| `Pydantic` | Defines structured data models | Type-safe outputs |
-| `ModelSettings` | Controls model behavior | LLM configuration |
+The Groq API key remains server-side and is **never exposed to the frontend**.
 
 ---
 
-# 🧪 Testing Checklist
+## 🎥 Demo Videos
 
-## Input Guardrail
-
--  Agriculture query is allowed
--  Crop query is allowed
--  Fertilizer query is allowed
--  Weather query is allowed
--  Subsidy query is allowed
--  Clearly unrelated query is blocked
-
-## Agent Routing
-
--  Crop → Agronomy
--  Weather → Weather
--  Pest → Pest Doctor
--  Mandi → Market
--  Fertilizer → Finance
--  Profit → Finance
--  Subsidy → Government Support
-
-## Tools
-
--  Crop advisor
--  Fertilizer calculator
--  Profit estimator
--  Weather API
--  Mandi lookup
--  Pest diagnosis
--  Government support
-
-## Safety
-
--  Unsupported pesticide dosage protection
--  Human medical advice protection
--  Unsupported currency protection
--  Guaranteed subsidy claim protection
+- 🎬 **[Full Agentic AI Project Demo](https://drive.google.com/file/d/1-62ahWog5dlVFlNfrxHPzon-UlQXH6kZ/view?usp=sharing)** — multi-agent architecture, Triage Agent, specialist agents, handoffs, function tools, context, session memory, guardrails, agricultural workflows.
+- 🖥️ **[Frontend Demo](https://drive.google.com/file/d/10IjYVs4HO-IScISIAGfHAkh4YYkkncH6/view?usp=sharing)** — dashboard, AI assistant, agent activity, crop advisor, pest doctor, weather, market & finance, government support, farmer profile.
 
 ---
 
-# ⚠️ Current Limitations
+## 🔄 Example Workflow
 
-Kisan Dost is currently a prototype/demo implementation.
+**Scenario:** `"Rabi mein Faisalabad mein kaunsi crop lagaoon?"`
 
-Current limitations include:
+| Step | What happens |
+|---|---|
+| 1. Input Guardrail | Agricultural request → Allowed ✅ |
+| 2. Triage | Crop Recommendation Intent → routed to Agronomy Agent |
+| 3. Tool Execution | Agronomy Agent calls `crop_advisor` |
+| 4. Structured Result | Crop, Suitability, Water Requirement, Expected Yield, Market Demand |
+| 5. Output Safety | Structured Result → Output Guardrail → Validated Response |
+| 6. Farmer Response | *"Chickpea is a suitable option for your current Rabi conditions..."* |
 
-- Terminal-based interface
-- Controlled/demo agricultural datasets
+---
+
+## 🤖 OpenAI Agents SDK Concepts Demonstrated
+
+| Concept | Usage |
+|---|---|
+| `Agent` | Creates Triage and specialist agents |
+| `Runner` | Executes agent workflows |
+| `Function Tools` | Connects agents with Python functions |
+| `Handoffs` | Routes requests between agents |
+| `RunContextWrapper` | Provides trusted farmer context |
+| `SQLiteSession` | Maintains conversation history |
+| `Input Guardrails` | Restricts unrelated requests |
+| `Output Guardrails` | Validates final responses |
+| `Pydantic` | Structured data validation |
+| `ModelSettings` | Model behavior configuration |
+
+---
+
+## 🧪 Testing Checklist
+
+<details>
+<summary><strong>Input Guardrail</strong></summary>
+
+- [x] Agriculture query allowed
+- [x] Crop query allowed
+- [x] Fertilizer query allowed
+- [x] Weather query allowed
+- [x] Subsidy query allowed
+- [x] Unrelated query blocked
+- [x] Roman Urdu agriculture queries supported
+</details>
+
+<details>
+<summary><strong>Agent Routing</strong></summary>
+
+- [x] Crop → Agronomy
+- [x] Weather → Weather
+- [x] Pest → Pest Doctor
+- [x] Mandi → Market
+- [x] Fertilizer → Finance
+- [x] Profit → Finance
+- [x] Subsidy → Government Support
+</details>
+
+<details>
+<summary><strong>Tools</strong></summary>
+
+- [x] Crop Advisor
+- [x] Fertilizer Calculator
+- [x] Profit Estimator
+- [x] Open-Meteo Weather
+- [x] Mandi Lookup
+- [x] Pest/Disease Diagnosis
+- [x] Government Support
+</details>
+
+<details>
+<summary><strong>Safety</strong></summary>
+
+- [x] Pesticide dosage protection
+- [x] Human medical advice protection
+- [x] Unsupported currency protection
+- [x] Guaranteed subsidy protection
+</details>
+
+<details>
+<summary><strong>Production</strong></summary>
+
+- [x] FastAPI backend deployed
+- [x] React frontend deployed
+- [x] SSE streaming
+- [x] Production CORS configuration
+- [x] Environment-based API URL
+- [x] Secrets kept server-side
+- [x] Health endpoint
+- [x] SPA routing configuration
+</details>
+
+---
+
+## ⚠️ Current Limitations
+
+Kisan Dost is currently a **functional prototype**. Current limitations include:
+
+- Controlled agricultural datasets
 - Controlled/demo mandi prices
-- Controlled/demo government support information
-- Limited crop dataset
-- Limited pest/disease dataset
-- External dependency on Open-Meteo for weather information
-- No production authentication system
-- No production-grade database
-- No dedicated mobile application
-
-These limitations define the current scope of the project and provide opportunities for future development.
+- Controlled/demo government-support information
+- Limited crop and pest datasets
+- Weather depends on an external API
+- SQLite session storage is suitable for the current prototype but not ideal for large-scale production
+- No full production authentication system
+- Agricultural recommendations should not replace qualified agricultural experts
+- Government and market information should be independently verified before important financial decisions
 
 ---
 
-# 🚀 Future Roadmap
+## 🚀 Future Roadmap
 
-Potential future improvements include:
-
-## 🌐 User Experience
-
-- Web application
-- Mobile application
-- Responsive farmer dashboard
+**🌐 User Experience**
 - Urdu-first interface
+- Improved mobile experience
+- Progressive Web App
+- Offline-friendly farmer workflows
 
-## 🎙️ Multimodal Interaction
-
-- Voice-based farmer interaction
+**🎙️ Multimodal Interaction**
+- Voice-based farmer assistant
 - Urdu speech recognition
 - Text-to-speech
 - Image-based crop diagnosis
+- Crop disease image analysis
 
-## 📊 Agricultural Intelligence
-
-- Larger crop database
+**📊 Agricultural Intelligence**
+- Larger agricultural knowledge base
 - Soil analysis
 - Historical farming analytics
 - Satellite data
 - Advanced weather intelligence
-- Crop disease image recognition
+- Personalized farming recommendations
 
-## 📈 Live Data
-
+**📈 Live Agricultural Data**
 - Live mandi prices
-- Official government-program APIs
-- Agricultural market intelligence
-- Real-time alerts
+- Official government-program integrations
+- Real-time agricultural alerts
+- Market intelligence
 
-## 👨‍🌾 Expert Escalation
+**👨‍🌾 Expert Escalation**
+- Escalating complex cases to qualified agricultural officers or experts
 
-Future versions could allow complex cases to be escalated to qualified agriculture officers or experts.
-
-## 🏭 Production Infrastructure
-
-- Authentication
+**🏭 Production Infrastructure**
 - Production database
-- Monitoring
-- Observability
-- Scalable deployment
+- Authentication and authorization
+- Monitoring & advanced observability
+- Scalable infrastructure
 - Notification services
+- Improved data governance
 
 ---
 
-# 🔮 Future Integration
+## 🔐 Security
 
-## Current Architecture
-
-The Kisan Dost project currently consists of two separate components:
-
-- **Frontend:** Standalone prototype (currently in development)
-- **Backend:** Agentic AI system built with OpenAI Agents SDK (functional)
-
-These components operate independently and are not yet integrated.
-
-## Planned Integration
-
-In future versions, the frontend and backend will be integrated through the following architecture:
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│                  React + TypeScript Frontend                 │
-│                   (Tailwind CSS Styling)                     │
-└────────────────────┬────────────────────────────────────────┘
-                     │
-                 HTTP APIs
-                     │
-┌────────────────────▼────────────────────────────────────────┐
-│                    FastAPI Backend                           │
-│                  (API Bridge Layer)                          │
-└────────────────────┬────────────────────────────────────────┘
-                     │
-                  Function Calls
-                     │
-┌────────────────────▼────────────────────────────────────────┐
-│        Kisan Dost Agentic AI System                          │
-│     (OpenAI Agents SDK, Specialist Agents, Tools)          │
-└─────────────────────────────────────────────────────────────┘
-```
-
-## Integration Plan
-
-- **FastAPI Backend** will serve as a bridge between the React frontend and the existing Agentic AI system
-- **API Endpoints** will expose agent capabilities through REST APIs
-- **Structured Responses** will maintain the existing Pydantic models for type safety
-- **Session Management** will connect frontend interactions to SQLite session storage
-- **Context Passing** will maintain farmer profile and conversation context across API calls
-
-## Status
-
-🚧 **This integration is planned for a future version and is not implemented yet.**
+- API credentials are stored in environment variables
+- `.env` is excluded from version control
+- API keys are never hard-coded
+- `.env.example` contains placeholders only
+- Backend secrets are never exposed to the React frontend
+- Tool inputs are validated
+- Deterministic calculations are handled by application logic
+- Guardrails validate sensitive responses
+- CORS is explicitly configured for the production frontend
 
 ---
 
-# 🔐 Security
+## 🧠 Project Philosophy
 
-Kisan Dost follows basic security practices:
-
-- API credentials are stored in environment variables.
-- `.env` should not be committed.
-- API keys should never be hard-coded.
-- `.env.example` should contain placeholders only.
-- Tool inputs are validated.
-- Agricultural calculations are performed through deterministic logic.
-- Safety guardrails validate final responses.
-
----
-
-# 🧠 Project Philosophy
-
-Kisan Dost is built around a simple principle:
-
-> **Let the AI understand the farmer. Let specialized agents handle the domain. Let tools handle the facts and calculations. Let guardrails protect the output.**
-
-The architecture can be summarized as:
+> **Let the AI understand the farmer. Let specialized agents handle the domain. Let tools handle the facts and calculations. Let guardrails protect the response.**
 
 ```text
-Understand
-    ↓
-Route
-    ↓
-Specialize
-    ↓
-Use Tools
-    ↓
-Structure Data
-    ↓
-Validate
-    ↓
-Respond
-
+Understand → Route → Specialize → Use Tools → Structure → Validate → Respond
 ```
 
-This approach demonstrates how Agentic AI can move beyond a basic question-answer chatbot toward a system capable of coordinating multiple specialized capabilities.
+This demonstrates how Agentic AI can move beyond a basic question-answer chatbot toward a system capable of coordinating multiple specialized capabilities.
+
+### 🌾 Why Kisan Dost?
+
+Agriculture is a domain where decisions directly affect crop production, farming expenses, water usage, pest management, market decisions, and farmer income. Kisan Dost brings multiple agricultural workflows together through a single natural-language interface — combining multi-agent architecture, agent handoffs, function tools, external APIs, deterministic calculations, structured outputs, farmer context, session memory, input/output guardrails, real-time SSE streaming, and production deployment into one practical **Agentic AI agricultural assistant**.
 
 ---
 
-# 🌾 Why Kisan Dost?
+## 📌 Project Status
 
-Agriculture is a domain where decisions can directly affect:
-
-- crop production,
-- farming expenses,
-- water usage,
-- pest management,
-- market decisions,
-- and farmer income.
-
-Kisan Dost demonstrates how an Agentic AI architecture can bring several of these workflows together through a single natural-language interface.
-
-The project combines:
-
-```text
-Multi-Agent Architecture
-        +
-Function Tools
-        +
-External API
-        +
-Deterministic Calculations
-        +
-Structured Outputs
-        +
-Context
-        +
-Session Memory
-        +
-Guardrails
-
-```
-
-into one practical agricultural assistant.
+| | |
+|---|---|
+| **Status** | Functional Web-Based Agentic AI Prototype |
+| **Interface** | React Web Application |
+| **Backend** | FastAPI |
+| **Primary Language** | Python + TypeScript |
+| **Architecture** | Multi-Agent Agentic AI |
+| **Model Provider** | Groq |
+| **Model** | `openai/gpt-oss-20b` |
+| **Agent Framework** | OpenAI Agents SDK |
+| **Frontend Deployment** | Vercel |
+| **Backend Deployment** | Railway |
+| **Domain** | Agriculture / AgriTech |
+| **Target Users** | Pakistani Farmers |
 
 ---
 
-# 📌 Project Status
+<div align="center">
 
-**Status:** Functional Agentic AI Prototype
-
-**Interface:** Terminal / CLI
-
-**Primary Language:** Python
-
-**Architecture:** Multi-Agent
-
-**Model Provider:** Groq OpenAI-compatible API
-
-**Agent Framework:** OpenAI Agents SDK
-
-**Domain:** Agriculture / AgriTech
-
-**Target Users:** Pakistani Farmers
-
----
-
-# 👨‍💻 Built With
-
-Built as an Agentic AI project demonstrating practical multi-agent orchestration, tool calling, context management, session memory, structured outputs, guardrails, deterministic business logic, and external API integration for an agricultural use case.
-
----
-
-## 🌱 Kisan Dost
-
+### 🌱 Kisan Dost
 **Understand the farmer. Route intelligently. Use reliable tools. Respond safely.**
+
+</div>
