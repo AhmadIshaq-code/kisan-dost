@@ -132,9 +132,11 @@ Crop Recommendation
 ## 🏗️ System Architecture
 
 <div align="center">
-  <img src="./assets/architecture-diagram.jpeg" alt="Kisan Dost end-to-end architecture — from Farmer, through the React frontend, FastAPI backend, the multi-agent AI layer, tools & data layer, to the safety and response layer" width="100%" />
-  <br/>
-  <em>End-to-end flow: Farmer → React Frontend → FastAPI Backend → Agentic AI Layer → Tools & Data Layer → Safety & Response Layer</em>
+
+![Kisan Dost Architecture](docs/architecture.png)
+
+*End-to-end flow: Farmer → React Frontend → FastAPI Backend → Agentic AI Layer → Tools & Data Layer → Safety & Response Layer*
+
 </div>
 
 <br/>
