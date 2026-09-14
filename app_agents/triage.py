@@ -29,17 +29,9 @@ from guardrails.output_guardrail import output_safety_guardrail
 
 load_dotenv()
 
+from app_agents.llm_provider import get_agent_model
 
-groq_client = AsyncOpenAI(
-    api_key=os.getenv("GROQ_API_KEY"),
-    base_url="https://api.groq.com/openai/v1",
-)
-
-
-model = OpenAIChatCompletionsModel(
-    model="openai/gpt-oss-20b",
-    openai_client=groq_client,
-)
+model = get_agent_model()
 
 
 class HandoffReason(BaseModel):
