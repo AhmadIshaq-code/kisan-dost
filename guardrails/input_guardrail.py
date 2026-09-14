@@ -68,29 +68,32 @@ AGRICULTURE_KEYWORDS = {
 
 
 def is_agriculture_related(message) -> bool:
-    # OpenAI Agents SDK may provide input as a list of messages.
+    # OpenAI Agents SDK may provide input as a list of messages from session history.
+    # We must validate the latest user query, not the historical accumulated turns.
     if isinstance(message, list):
-        parts = []
-
-        for item in message:
+        target = ""
+        for item in reversed(message):
             if isinstance(item, dict):
-                content = item.get("content", "")
-
-                if isinstance(content, str):
-                    parts.append(content)
-
-                elif isinstance(content, list):
-                    for content_item in content:
-                        if isinstance(content_item, dict):
-                            text = content_item.get("text", "")
-                            if isinstance(text, str):
-                                parts.append(text)
-
+                role = item.get("role")
+                if role == "user" or role is None:
+                    content = item.get("content", "")
+                    if isinstance(content, str):
+                        target = content
+                        break
+                    elif isinstance(content, list):
+                        target = " ".join(
+                            c.get("text", "")
+                            for c in content
+                            if isinstance(c, dict)
+                        )
+                        break
             elif isinstance(item, str):
-                parts.append(item)
-
-        text = " ".join(parts).lower().strip()
-
+                target = item
+                break
+            elif hasattr(item, "content"):
+                target = str(item.content)
+                break
+        text = target.lower().strip()
     else:
         text = str(message).lower().strip()
 

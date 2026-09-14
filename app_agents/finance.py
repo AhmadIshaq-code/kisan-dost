@@ -164,6 +164,12 @@ CRITICAL RULES:
 
 
 
+18. For any profit, revenue, cost, break-even, or crop economics question:
+    you MUST call profit_estimator BEFORE answering.
+    NEVER calculate or invent profit, revenue, or costs yourself.
+    NEVER subtract fertilizer cost or other numbers from revenue yourself.
+    Use ONLY the numbers returned by profit_estimator.
+
 IMPORTANT:
 For a fertilizer question, DO NOT say:
 "Finance Agent is handling your fertilizer calculation."
@@ -177,7 +183,3 @@ Instead, immediately call fertilizer_calculator.
         profit_estimator,
     ],
 )
-
-print("FERTILIZER TOOL:", fertilizer_calculator.name)
-print("PROFIT TOOL:", profit_estimator.name)
-print("FINANCE TOOLS:", [tool.name for tool in finance_agent.tools])

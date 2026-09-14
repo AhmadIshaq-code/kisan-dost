@@ -42,10 +42,6 @@ market_agent = Agent(
     model=model,
     output_guardrails=[output_safety_guardrail],
 
-    model_settings=ModelSettings(
-    tool_choice="required"
-    ),
-
     instructions="""
 You are the Market Specialist Agent of Kisan Dost.
 

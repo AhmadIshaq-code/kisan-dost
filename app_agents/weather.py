@@ -29,10 +29,6 @@ weather_agent = Agent(
 
     output_guardrails=[output_safety_guardrail],
 
-    model_settings=ModelSettings(
-        tool_choice="required"
-    ),
-
     instructions="""
 You are the Weather and Irrigation Specialist of Kisan Dost.
 

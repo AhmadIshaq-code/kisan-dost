@@ -5,6 +5,8 @@ from agents import (
     output_guardrail,
 )
 
+import re
+
 # Dangerous / unsupported patterns that should never appear
 # as confident advice in the final farmer response.
 
@@ -15,19 +17,21 @@ DANGEROUS_PATTERNS = [
     "apply 100 ml",
     "apply 200 ml",
     "apply 500 ml",
+    "spray 100 ml",
+    "spray 200 ml",
+    "spray 500 ml",
     "dose 100",
     "dose 200",
     "dose 500",
-    "ml per acre",
-    "ml/acre",
-    "mg per acre",
-    "mg/acre",
 ]
 
-UNSAFE_CURRENCY_PATTERNS = [
-    "₹",
-    "$",
-]
+# Unverified numerical pesticide dosage (e.g., "100 ml per acre", "250 ml/acre")
+NUMERICAL_DOSAGE_REGEX = re.compile(
+    r"\b\d+\s*(?:ml|mg|gm|litres?|liters?)\s*(?:/|\bper\b)\s*acre\b",
+    re.IGNORECASE,
+)
+
+USD_CURRENCY_REGEX = re.compile(r"\$\s*\d+", re.IGNORECASE)
 
 HUMAN_MEDICAL_PATTERNS = [
     "take this medicine",
@@ -49,6 +53,12 @@ def check_output_safety(output: str) -> tuple[bool, str]:
                 "Final answer contains an unverified pesticide dosage."
             )
 
+    if NUMERICAL_DOSAGE_REGEX.search(output):
+        return (
+            False,
+            "Final answer contains an unverified pesticide dosage per acre."
+        )
+
     # 2. Block human medical advice
     for pattern in HUMAN_MEDICAL_PATTERNS:
         if pattern in text:
@@ -58,12 +68,11 @@ def check_output_safety(output: str) -> tuple[bool, str]:
             )
 
     # 3. Currency consistency
-    for pattern in UNSAFE_CURRENCY_PATTERNS:
-        if pattern in output:
-            return (
-                False,
-                "Final answer contains unsupported currency format."
-            )
+    if "₹" in output or "inr" in text or "usd" in text or USD_CURRENCY_REGEX.search(output):
+        return (
+            False,
+            "Final answer contains unsupported currency format."
+        )
 
     # 4. Government support must not be presented
     # as guaranteed/confirmed when using demo data.

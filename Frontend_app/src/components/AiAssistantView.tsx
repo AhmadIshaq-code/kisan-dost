@@ -39,6 +39,7 @@ export const AiAssistantView: React.FC<AiAssistantViewProps> = ({
   const [messages, setMessages] = useState<ChatMessage[]>(INITIAL_CHAT_MESSAGES);
   const [inputValue, setInputValue] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
+  const [sessionId, setSessionId] = useState<string>(() => `kisan_web_${Date.now()}`);
   const [flowState, setFlowState] = useState<AgentFlowState>({
     step1: 'completed',
     step2: 'completed',
@@ -63,7 +64,7 @@ export const AiAssistantView: React.FC<AiAssistantViewProps> = ({
     }
   }, [initialPromptText]);
 
-  const handleSendMessage = (textToSend?: string) => {
+  const handleSendMessage = async (textToSend?: string) => {
     const text = textToSend || inputValue;
     if (!text.trim() || isProcessing) return;
 
@@ -78,63 +79,109 @@ export const AiAssistantView: React.FC<AiAssistantViewProps> = ({
     setInputValue('');
     setIsProcessing(true);
 
-    // Find matching mock prompt or default
-    const matched = QUICK_PROMPTS.find(
-      (qp) => text.toLowerCase().includes(qp.label.toLowerCase().slice(3)) || 
-              text.toLowerCase().includes(qp.promptText.toLowerCase().slice(0, 15))
-    ) || QUICK_PROMPTS[0];
-
-    const specialist = matched.specialist;
-    const tool = matched.tool;
-    const toolTag = `${specialist} → ${tool}`;
-
-    // Simulate the Multi-Agent Step progression visually
+    // Initial flow state indicator
     setFlowState({
       step1: 'active',
       step2: 'pending',
       step3: 'pending',
       step4: 'pending',
       step5: 'pending',
-      activeSpecialist: specialist,
-      activeTool: tool,
+      activeSpecialist: 'Triage Agent',
+      activeTool: 'Analyzing query & routing...',
     });
 
-    setTimeout(() => {
-      setFlowState((prev) => ({ ...prev, step1: 'completed', step2: 'active' }));
-    }, 300);
+    const stepTimer1 = setTimeout(() => {
+      setFlowState((prev) => ({ ...prev, step1: 'completed', step2: 'active', activeTool: 'Routing to specialist...' }));
+    }, 400);
 
-    setTimeout(() => {
-      setFlowState((prev) => ({ ...prev, step2: 'completed', step3: 'active' }));
-    }, 700);
+    const stepTimer2 = setTimeout(() => {
+      setFlowState((prev) => ({ ...prev, step2: 'completed', step3: 'active', activeTool: 'Specialist executing tools...' }));
+    }, 1200);
 
-    setTimeout(() => {
-      setFlowState((prev) => ({ ...prev, step3: 'completed', step4: 'active' }));
-    }, 1100);
+    try {
+      const response = await fetch('http://localhost:8000/api/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          message: text.trim(),
+          farmer: {
+            name: farmer.name,
+            district: farmer.location,
+            province: 'Punjab',
+            acres: farmer.farmSizeAcres,
+            soil_type: farmer.soilType,
+            season: farmer.season,
+            water_availability: farmer.waterAvailability,
+          },
+          session_id: sessionId,
+        }),
+      });
 
-    setTimeout(() => {
-      setFlowState((prev) => ({ ...prev, step4: 'completed', step5: 'completed' }));
-      
+      clearTimeout(stepTimer1);
+      clearTimeout(stepTimer2);
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.detail || `Server responded with status ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      if (data.session_id) {
+        setSessionId(data.session_id);
+      }
+
+      setFlowState({
+        step1: 'completed',
+        step2: 'completed',
+        step3: 'completed',
+        step4: 'completed',
+        step5: 'completed',
+        activeSpecialist: 'Kisan Dost AI',
+        activeTool: 'Agent Response Verified',
+      });
+
       const aiResponse: ChatMessage = {
         id: `ai-${Date.now()}`,
         sender: 'ai',
-        text: matched.response,
+        text: data.response,
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-        agentToolTag: toolTag,
-        recommendedCropCard: matched.cropCard,
-        agentTrace: {
-          triage: 'Triage Agent',
-          specialist: specialist,
-          tool: tool,
-        },
+        agentToolTag: 'Agentic AI Verified',
       };
 
       setMessages((prev) => [...prev, aiResponse]);
+    } catch (err: any) {
+      clearTimeout(stepTimer1);
+      clearTimeout(stepTimer2);
+
+      setFlowState({
+        step1: 'completed',
+        step2: 'completed',
+        step3: 'completed',
+        step4: 'completed',
+        step5: 'completed',
+        activeSpecialist: 'System Notice',
+        activeTool: 'Connection Error',
+      });
+
+      const errorMsg: ChatMessage = {
+        id: `err-${Date.now()}`,
+        sender: 'ai',
+        text: `⚠️ Server se rabta nahi ho saka. Barah-e-karam check karein ke FastAPI backend (http://localhost:8000) active hai. (${err.message || 'Network Error'})`,
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      };
+
+      setMessages((prev) => [...prev, errorMsg]);
+    } finally {
       setIsProcessing(false);
-    }, 1500);
+    }
   };
 
   const handleResetChat = () => {
     setMessages(INITIAL_CHAT_MESSAGES);
+    setSessionId(`kisan_web_${Date.now()}`);
     setFlowState({
       step1: 'completed',
       step2: 'completed',

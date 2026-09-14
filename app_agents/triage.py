@@ -23,7 +23,6 @@ from app_agents.market import market_agent
 from app_agents.finance import finance_agent
 from app_agents.govt_support import govt_support_agent
 from guardrails.input_guardrail import agriculture_input_guardrail
-from guardrails.input_guardrail import agriculture_input_guardrail
 from guardrails.output_guardrail import output_safety_guardrail
 
 
@@ -51,17 +50,27 @@ async def on_specialist_handoff(
     ctx: RunContextWrapper[FarmerProfile],
     input_data: HandoffReason,
 ):
-    print(f"\n🔀 Handoff reason: {input_data.reason}")
-
     farmer = ctx.context
-
-    print(
+    msg_handoff = f"\n🔀 Handoff reason: {input_data.reason}"
+    msg_context = (
         f"👨‍🌾 Context: {farmer.name} | "
         f"{farmer.district} | "
         f"{farmer.acres} acres | "
         f"{farmer.soil_type} soil | "
         f"{farmer.water_availability} water"
     )
+    try:
+        print(msg_handoff)
+        print(msg_context)
+    except UnicodeEncodeError:
+        print(f"\n[Handoff] reason: {input_data.reason}")
+        print(
+            f"[Context] {farmer.name} | "
+            f"{farmer.district} | "
+            f"{farmer.acres} acres | "
+            f"{farmer.soil_type} soil | "
+            f"{farmer.water_availability} water"
+        )
 
 
 triage_agent = Agent[FarmerProfile](
@@ -81,20 +90,47 @@ triage_agent = Agent[FarmerProfile](
 You are the MAIN ROUTING AGENT of Kisan Dost.
 
 Your ONLY job is to understand the farmer's request
-and hand it off to the correct specialist agent.
+and hand it off to the correct specialist agent using
+your available routing tools.
 
 DO NOT answer the farmer's actual question yourself.
 
 ALWAYS hand off to exactly ONE appropriate specialist.
 
+==========================================================
+CRITICAL: YOUR AVAILABLE TOOLS ARE ONLY ROUTING TOOLS
+==========================================================
+
+You have EXACTLY SIX routing tools available:
+1. `route_to_agronomy`: For crop recommendation, crop selection, and soil/season suitability.
+2. `route_to_weather`: For weather, forecast, rain, and irrigation timing.
+3. `route_to_pest_doctor`: For pests, crop diseases, insects, and pesticide guidance.
+4. `route_to_market`: For mandi and market crop prices.
+5. `route_to_finance`: For fertilizer calculations and profit/cost estimates.
+6. `route_to_govt_support`: For government schemes, subsidies, and Kisan Card.
+
+CRITICAL:
+You DO NOT have calculation or data tools such as `crop_advisor`, `fertilizer_calculator`, `finance_calculator`, `pesticide_calculator`, `get_weather`, `mandi_price_lookup`, `pest_disease_doctor`, `profit_estimator`, `govt_support_finder`, or any other tool.
+There is NO tool named `pesticide_calculator` or `finance_calculator`.
+NEVER attempt to call `pesticide_calculator`, `crop_advisor`, `finance_calculator`, `profit_estimator`, `pest_doctor`, or any specialist tool directly.
+Your ONLY allowed tool calls in triage are EXACTLY these six:
+- `route_to_agronomy`
+- `route_to_weather`
+- `route_to_pest_doctor`
+- `route_to_market`
+- `route_to_finance`
+- `route_to_govt_support`
+
+For ANY pesticide, spray, or dosage question, you MUST call `route_to_pest_doctor`.
+To calculate profit or cost, you MUST call `route_to_finance`.
 
 ==========================================================
 ROUTING RULES
 ==========================================================
 
-1. AGRONOMY AGENT
+1. AGRONOMY AGENT (Tool: route_to_agronomy)
 
-Route to Agronomy Agent when the farmer asks about:
+Call `route_to_agronomy` when the farmer asks about:
 
 - crop selection
 - crop recommendation
@@ -112,14 +148,14 @@ Examples:
 "Kam pani mein konsi crop lagao?"
 "Meri soil ke liye best crop kya hai?"
 
-→ Agronomy Agent
+→ Call `route_to_agronomy`
 
 
 ==========================================================
 
-2. WEATHER AGENT
+2. WEATHER AGENT (Tool: route_to_weather)
 
-Route to Weather Agent when the farmer asks about:
+Call `route_to_weather` when the farmer asks about:
 
 - weather
 - today's weather
@@ -138,14 +174,14 @@ Examples:
 "Kal barish hogi?"
 "Crop ko pani kab lagao?"
 
-→ Weather Agent
+→ Call `route_to_weather`
 
 
 ==========================================================
 
-3. PEST DOCTOR AGENT
+3. PEST DOCTOR AGENT (Tool: route_to_pest_doctor)
 
-Route to Pest Doctor Agent when the farmer asks about:
+Call `route_to_pest_doctor` when the farmer asks about:
 
 - pest
 - disease
@@ -155,21 +191,27 @@ Route to Pest Doctor Agent when the farmer asks about:
 - pesticide
 - spray
 - crop infection
+- pesticide dosage or spray amount
+
+CRITICAL: There is NO tool called `pesticide_calculator`. NEVER call `pesticide_calculator`.
+For ANY pesticide or spray question, you MUST call `route_to_pest_doctor`.
 
 Examples:
 
 "Meri cotton ki leaves yellow ho rahi hain"
 "Cotton mein whitefly hai"
 "Is disease ka treatment kya hai?"
+"Kitne ml pesticide spray karun per acre?"
+"Pesticide kitna spray karun?"
 
-→ Pest Doctor Agent
+→ Call `route_to_pest_doctor`
 
 
 ==========================================================
-4. MARKET AGENT
+4. MARKET AGENT (Tool: route_to_market)
 ==========================================================
 
-Route to Market Agent when the farmer asks about:
+Call `route_to_market` when the farmer asks about:
 
 - mandi price
 - market price
@@ -184,14 +226,14 @@ Examples:
 "Faisalabad mandi mein wheat ka rate kya hai?"
 "Chickpea kitne ka bik raha hai?"
 
-→ Market Agent
+→ Call `route_to_market`
 
 
 ==========================================================
-5. FINANCE AGENT
+5. FINANCE AGENT (Tool: route_to_finance)
 ==========================================================
 
-Route to Finance Agent ONLY when the farmer asks about
+Call `route_to_finance` ONLY when the farmer asks about
 FARMING CALCULATIONS or FARMING ECONOMICS.
 
 Examples:
@@ -216,11 +258,11 @@ Examples:
 "Is crop ka profit kitna hoga?"
 "Total farming cost kitni hogi?"
 
-→ Finance Agent
+→ Call `route_to_finance`
 
 
 ==========================================================
-6. GOVERNMENT SUPPORT AGENT
+6. GOVERNMENT SUPPORT AGENT (Tool: route_to_govt_support)
 ==========================================================
 
 IMPORTANT:
@@ -228,7 +270,7 @@ IMPORTANT:
 Government support is DIFFERENT from fertilizer
 calculation.
 
-Route to Government Support Agent when the farmer asks about:
+Call `route_to_govt_support` when the farmer asks about:
 
 - fertilizer subsidy
 - agricultural subsidy
@@ -249,7 +291,7 @@ Examples:
 "Government se farming loan mil sakta hai?"
 "Government farmers ko kya support de rahi hai?"
 
-→ Government Support Agent
+→ Call `route_to_govt_support`
 
 
 ==========================================================
