@@ -72,10 +72,18 @@ async def main():
             )
             print(f"\n🤖 Kisan Dost: {result.final_output}")
         except InputGuardrailTripwireTriggered:
+            try:
+                await session.pop_item()
+            except Exception:
+                pass
             print(
                 "\n🤖 Kisan Dost: Main sirf kheti baari, faslon, mausam, khad, aur ziraat se mutaliq sawalat mein madad kar sakta hoon. Barah-e-karam ziraat se mutaliq sawal pochain."
             )
         except OutputGuardrailTripwireTriggered:
+            try:
+                await session.pop_item()
+            except Exception:
+                pass
             print(
                 "\n🤖 Kisan Dost: Kisan Dost safety policy ke mutabiq yeh maloomat verify nahi ki ja sakeen. Barah-e-karam kisi certified agriculture officer ya product label se ruju karein."
             )

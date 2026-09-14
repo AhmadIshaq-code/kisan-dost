@@ -41,4 +41,6 @@ export interface ChatMessage {
     specialist: string;
     tool: string;
   };
+  agentTrail?: string[];
+  isStreaming?: boolean;
 }

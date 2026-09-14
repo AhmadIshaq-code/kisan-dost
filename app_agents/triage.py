@@ -193,11 +193,14 @@ Call `route_to_pest_doctor` when the farmer asks about:
 - crop infection
 - pesticide dosage or spray amount
 
-CRITICAL: There is NO tool called `pesticide_calculator`. NEVER call `pesticide_calculator`.
-For ANY pesticide or spray question, you MUST call `route_to_pest_doctor`.
+CRITICAL:
+There is NO tool named `pest_disease_doctor`, `pest_doctor`, or `pesticide_calculator` in your triage tools.
+NEVER attempt to call `pest_disease_doctor` directly from triage.
+For ANY pest, insect, crop disease, leaf damage, keetay, keeray, pesticide, or spray question, you MUST call `route_to_pest_doctor`.
 
 Examples:
 
+"Mere chickpea plants par keetay hain aur patte damage ho rahay hain"
 "Meri cotton ki leaves yellow ho rahi hain"
 "Cotton mein whitefly hai"
 "Is disease ka treatment kya hai?"
